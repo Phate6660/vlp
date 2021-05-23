@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+## Usage: ./install mode
+## mode = debug or release
+
+mode="--${1}"
+cargo build "${mode}"
+mv "target/${1}/dotshuf" "target/${1}/.shuf"
