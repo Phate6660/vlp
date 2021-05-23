@@ -1,0 +1,92 @@
+#!/bin/bash
+## Options:
+## `-c` = cpu
+## `-d` = distro
+## `-h` = hostname
+## `-k` = kernel
+
+cpu() {
+    local FILE="/proc/cpuinfo"
+    if [ -f "$FILE" ]; then
+        # shellcheck disable=SC2155
+        local CPU_FILE_CONTENTS="$(< "${FILE}")"
+        readarray -t CPU_ARRAY <<< "${CPU_FILE_CONTENTS}"
+        local MODEL_NAME_LINE="${CPU_ARRAY[4]}"
+        IFS=':' read -ra MODEL_NAME_LINE_ARRAY <<< "${MODEL_NAME_LINE}"
+        local MODEL_NAME="${MODEL_NAME_LINE_ARRAY[1]}"
+        local MODEL_NAME="${MODEL_NAME:1}"
+        cpu="${MODEL_NAME}"
+    else
+        cpu="$(uname -p)"
+    fi
+}
+
+distro() {
+    local FILE_BEDROCK="/bedrock/etc/os-release"
+    local FILE_USUAL="/etc/os-release"
+    local FILE_WEIRD="/var/lib/os-release"
+    if [ -f "$FILE_BEDROCK" ]; then
+        local FILE="$FILE_BEDROCK"
+    elif [ -f "$FILE_USUAL" ]; then
+        local FILE="$FILE_USUAL"
+    elif [ -f "$FILE_WEIRD" ]; then
+        local FILE="$FILE_WEIRD"
+    fi
+    # shellcheck disable=SC2155
+    local DISTRO_FILE_CONTENTS="$(< ${FILE})"
+    readarray -t DISTRO_ARRAY <<< "${DISTRO_FILE_CONTENTS}"
+    local PRETTY_NAME_LINE="${DISTRO_ARRAY[2]}"
+    IFS='=' read -ra PRETTY_NAME_LINE_ARRAY <<< "${PRETTY_NAME_LINE}"
+    local PRETTY_NAME_WITH_QUOTES="${PRETTY_NAME_LINE_ARRAY[1]}"
+    local PRETTY_NAME="${PRETTY_NAME_WITH_QUOTES//\"}"
+    distro="${PRETTY_NAME}"
+}
+
+hostname() {
+    local FILE="/etc/hostname"
+    if [ -f "$FILE" ]; then
+        hostname="$(<$FILE)"
+    else
+        hostname="N/A (could not read ${FILE})"
+    fi
+}
+
+kernel() {
+    local FILE="/proc/sys/kernel/osrelease"
+    if [ -f "$FILE" ]; then
+        kernel="$(<$FILE)"
+    else
+        kernel="N/A (could not read ${FILE})"
+    fi
+}
+
+do_cpu=
+do_distro=
+do_hostname=
+do_kernel=
+while getopts cdhk arg; do
+    case "$arg" in
+        c) do_cpu=1;;
+        d) do_distro=1;;
+        h) do_hostname=1;;
+        k) do_kernel=1;;
+        ?) echo -e "Passed invalid flags.\nFlags supported are:\n-c (cpu)\n-d (distro)\n-h (hostname)\n-k (kernel)";;
+    esac
+done
+
+if [ -n "$do_cpu" ]; then
+    cpu
+    echo "CPU      = $cpu"
+fi
+if [ -n "$do_distro" ]; then
+    distro
+    echo "Distro   = $distro"
+fi
+if [ -n "$do_hostname" ]; then
+    hostname
+    echo "Hostname = $hostname"
+fi
+if [ -n "$do_kernel" ]; then
+    kernel
+    echo "Kernel   = $kernel"
+fi
