@@ -1,16 +1,16 @@
 # .shuf
 
-There are 2 version, a C++ version and a Rust version.
+There are 2 versions, a C++ version and a Rust version.
 
 ## Rust
 
-To build, use `./install mode` where `mode` is either `debug` or `release`.
+To build, use `./install mode` where `mode` is either `debug` or `release`.<br>
 Binary will be at `target/mode/.shuf`.
 
 ## C++
 
 To build, use either:
-- `g++ -c src/main.cpp -o .shuf` (only requires a working C++ compiler, `g++` is used as an example)
+- `g++ -c -std=c++2a src/main.cpp -o .shuf` (only requires a working C++ compiler, `g++` is used as an example)
 - `xmake` (requires [xmake](https://github.com/xmake-io/xmake)).
 
 Binary will be at `build/OS/ARCH/mode/.shuf` if using `xmake`.
