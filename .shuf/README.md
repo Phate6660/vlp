@@ -1,7 +1,21 @@
 # .shuf
 
-To install, use `./install mode` where `mode` is either `debug` or `release`.
+There are 2 version, a C++ version and a Rust version.
+
+## Rust
+
+To build, use `./install mode` where `mode` is either `debug` or `release`.
 Binary will be at `target/mode/.shuf`.
+
+## C++
+
+To build, use either:
+- `g++ -c src/main.cpp -o .shuf` (only requires a working C++ compiler, `g++` is used as an example)
+- `xmake` (requires [xmake](https://github.com/xmake-io/xmake)).
+
+Binary will be at `build/OS/ARCH/mode/.shuf` if using `xmake`.
+
+## Both
 
 Uses: 
 - `.shuf` to list a random entry in the current dir

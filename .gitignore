@@ -1,4 +1,6 @@
+.xmake
 Cargo.lock
+build
 target
 
 # Vim swap files
