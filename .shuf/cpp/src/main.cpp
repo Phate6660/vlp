@@ -6,7 +6,7 @@
 #include <string>
 #include <vector>
 
-int main(int argc, char** argv) {
+int main(int argc) {
     std::vector<std::string> file_vector;
     for (const auto& entry : std::filesystem::directory_iterator(".")) {
         file_vector.push_back(entry.path().string().erase(0,2));
