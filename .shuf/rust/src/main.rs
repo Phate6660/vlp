@@ -7,7 +7,7 @@ fn main() {
     let output = paths.choose(&mut rng).unwrap().unwrap().file_name().into_string().unwrap();
     let args: Vec<String> = std::env::args().collect();
     
-    if args[1] == "mpv" {
+    if args.iter().any(|i| i == "mpv") {
         std::process::Command::new("mpv")
             .arg(output)
             .stdin(std::process::Stdio::inherit())
