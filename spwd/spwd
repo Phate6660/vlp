@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+
+if [ "${1}" == "." ] || [ "${1}" == "" ]; then
+    dir="${PWD}"
+else
+    dir="${1}"
+fi
+
+IFS='/' read -ra split_dir <<< "${dir}"
+split_dir_count="${#split_dir[@]}"
+
+n=0
+for segment in "${split_dir[@]}"; do
+    if [ "${n}" == 0 ]; then
+        n=$((n+1))
+        continue
+    fi
+    if ((n < split_dir_count - 1)); then
+        char="$(cut -c 1 <<< "${segment}")"
+        echo -n "/${char}"
+    elif ((n = split_dir_count)); then
+        echo -n "/${segment}"
+    fi
+    n=$((n+1))
+done
+echo
