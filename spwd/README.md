@@ -7,10 +7,19 @@ This prints a shortened version of the specified directory<br>
 
 Example outputs:
 ```
-$ ./spwd
+$ spwd
 /h/v/p/v/spwd
-$ ./spwd .
+$ spwd .
 /h/v/u/v/spwd
-$ ./spwd /home/valley/downloads/git
+$ spwd /home/valley/downloads/git
 /h/v/d/git
 ```
+
+## Requirements
+
+bash version:
+- bash
+- cut
+
+rust version:
+- rust
